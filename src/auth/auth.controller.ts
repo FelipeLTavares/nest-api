@@ -1,7 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Public } from './public.decorator';
-import { CreateUserDto } from './create-user.dto';
+import { Public } from './decorators/public.decorator';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { SignInDto } from './dto/signin.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +14,7 @@ export class AuthController {
     public signIn(
         @Body('email') email: string,
         @Body('password') password: string,
-    ) {
+    ): Promise<SignInDto> {
         return this.authService.signIn(email, password);
     }
 
@@ -21,7 +22,7 @@ export class AuthController {
     @Post('register')
     public register(
         @Body() createUserDto: CreateUserDto
-    ) {
+    ): Promise<CreateUserDto> {
         return this.authService.register(createUserDto);
     }
 }
