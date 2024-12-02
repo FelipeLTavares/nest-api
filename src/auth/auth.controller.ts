@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { SignInDto } from './dto/signin.dto';
+import { UserDto } from 'src/user/dto/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +23,7 @@ export class AuthController {
     @Post('register')
     public register(
         @Body() createUserDto: CreateUserDto
-    ): Promise<CreateUserDto> {
+    ): Promise<UserDto> {
         return this.authService.register(createUserDto);
     }
 }

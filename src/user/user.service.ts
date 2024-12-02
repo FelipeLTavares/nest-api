@@ -5,60 +5,55 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<UserDto> {
     const { name, email, password } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = this.userRepository.create({ name, email, password: hashedPassword });
     const savedUser = await this.userRepository.save(user);
-    delete savedUser.password;
 
-    return savedUser;
+    return UserDto.toDto(savedUser);
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAll(): Promise<UserDto[]> {
+    const users = await this.userRepository.find()
+    return users.map(user => UserDto.toDto(user));
   }
 
-  findOne(id: number): Promise<User> {
-    return this.userRepository.findOne({ where: { id } });
+  async findOne(id: number): Promise<UserDto> {
+    let user = await this.userRepository.findOne({ where: { id } });
+    return user ? UserDto.toDto(user) : user;
   }
 
   findByEmail(email: string) {
     return this.userRepository.findOne({ where: { email } })
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
     await this.userRepository.update(id, updateUserDto);
     const updatedUser = await this.userRepository.findOne({ where: { id } });
     if (!updatedUser) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    return updatedUser;
+    return UserDto.toDto(updatedUser);
   }
 
-  async changeStatus(id: number): Promise<User> {
+  async changeStatus(id: number): Promise<UserDto> {
     const user = await this.userRepository.findOne({ where: { id } })
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
     user.active = !user.active;
     await this.userRepository.save(user);
-    return user;
+    return UserDto.toDto(user);
   }
-
-  // async remove(id: number): Promise<void> {
-  //   const result = await this.userRepository.delete(id);
-  //   if (result.affected === 0) {
-  //     throw new NotFoundException(`User with ID ${id} not found`);
-  //   }
-  // }
 }

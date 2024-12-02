@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { ConfigModule } from '@nestjs/config';
+import { VehicleModule } from './vehicle/vehicle.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({isGlobal: true}) ,
     UserModule,
     AuthModule,
+    VehicleModule,
   ],
   controllers: [],
   providers: [

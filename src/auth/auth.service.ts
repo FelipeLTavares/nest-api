@@ -4,6 +4,7 @@ import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { SignInDto } from './dto/signin.dto';
+import { UserDto } from 'src/user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +33,7 @@ export class AuthService {
     }
 
 
-    public async register(createUserDto: CreateUserDto): Promise<CreateUserDto> {
+    public async register(createUserDto: CreateUserDto): Promise<UserDto> {
         return this.userService.create(createUserDto);
     }
 
