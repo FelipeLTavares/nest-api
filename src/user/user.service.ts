@@ -15,6 +15,9 @@ export class UserService {
   ) { }
 
   async create(createUserDto: CreateUserDto): Promise<UserDto> {
+    const userByEmail = await this.findByEmail(createUserDto.email);
+    if(userByEmail) throw new Error('E-mail already in use!');
+
     const { name, email, password } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
 

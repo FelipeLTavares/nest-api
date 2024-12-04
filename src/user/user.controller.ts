@@ -30,12 +30,7 @@ export class UserController {
   }
 
   @Patch('/change-status/:id')
-  changeStatus(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
-    return this.userService.update(+id, updateUserDto);
+  changeStatus(@Param('id') id: string): Promise<UserDto> {
+    return this.userService.changeStatus(+id);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
 }
