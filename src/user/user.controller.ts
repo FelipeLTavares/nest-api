@@ -9,10 +9,10 @@ import { UserDto } from './dto/user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
-    return this.userService.create(createUserDto);
-  }
+  // @Post()
+  // async create(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
+  //   return this.userService.create(createUserDto);
+  // }
 
   @Get()
   findAll(): Promise<UserDto[]> {
@@ -24,13 +24,13 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
-    return this.userService.update(+id, updateUserDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UserDto> {
+  //   return this.userService.update(+id, updateUserDto);
+  // }
 
-  @Patch('/change-status/:id')
-  changeStatus(@Param('id') id: string): Promise<UserDto> {
-    return this.userService.changeStatus(+id);
-  }
+  // @Patch('/change-status/:id')
+  // changeStatus(@Param('id') id: string): Promise<UserDto> {
+  //   return this.userService.changeStatus(+id);
+  // }
 }
