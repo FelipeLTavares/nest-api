@@ -1,25 +1,43 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# API REST Nestjs
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Introdução
+  Esse projeto se trata de uma API REST que serve de base para criação de novos projetos. Feito com o framework Nest; Typeorm para interação com banco dados, lidando com migrations e seeders; bcrypt para hashear senhas; e um sistema de autenticação básico com JWT.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
+## Como rodar
+### Geral
+Criar uma arquivo ```.env``` na raíz do projeto e preencher com as variáveis que estão no ```.env.example```. Para usar o banco postgres criado no Docker deve-se usar o host "db" indicado no exemplo.
 
-## License
+### No Docker
+- Para testar o projeto no Docker tenha o docker e o docker-compose instalados e rode ```docker compose up --build```. O projeot vai iniciar usando a porta 3000.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Localmente
+- Tenha o Node. js (versão >= 20) isntalado. E tenha acesso a um banco de dados relacional
+- Preencha os dados no .env corretamente
+- Rode ```npm run start:dev```
+- O projeto rodará na porta 3000
+
+## Funcionalidades
+O projeto tem o objetivo de ser básico, então só possui funcionalidades básicas de CRUD de usuários e autenticação de usuários.
+
+### Autenticação
+
+1. Primeiro crie um novo usuário mandando uma requisição POST para ```http://localhost:3000/auth/register``` com um json com as propriedades "email" e "password" no corpo, tal como no exemplo abaixo:
+
+      ```json
+      {
+        "email": "john.doe@email.com",
+        "password": "password"
+      }
+      ```
+
+2. Depois mande as mesma informações para o endpoint ```http://localhost:3000/auth/login``` e isso erá retornar um token
+
+3. Use o token retornado no cabeçalho Autorization das requisições protegidas
+
+4. Por padrão todas as rotas são protegidas, exceto as que tem o decorator ```@Public```
+
+### Usuários
+1. Buscar todos os usuários cadastrados: mande um requisição GET autenticada para ```http://localhost:3000/user```
+
+2. Buscar uma usuários pelo ID: mande um requisição GET autenticada para ```http://localhost:3000/user/:id```
+
