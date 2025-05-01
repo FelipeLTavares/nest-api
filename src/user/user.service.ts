@@ -6,6 +6,7 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
+import { EmailAlreadyInUseException } from 'src/exceptions/emailAlreadyInUse.exception';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,7 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<UserDto> {
     const userByEmail = await this.findByEmail(createUserDto.email);
-    if(userByEmail) throw new Error('E-mail already in use!');
+    if(userByEmail) throw new EmailAlreadyInUseException(createUserDto.email);
 
     const { name, email, password } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
